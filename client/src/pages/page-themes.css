@@ -47,6 +47,30 @@
   --input: 140 20% 85%;
 }
 
+/* Sticky table header styles */
+.overflow-auto {
+  max-height: calc(100vh - 70px);
+  position: relative;
+}
+
+.sticky {
+  position: sticky;
+  z-index: 10;
+}
+
+/* Ensure table header stays fixed during scroll */
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background-color: inherit;
+}
+
+/* Maintain horizontal scrolling */
+.overflow-auto table {
+  width: 100%;
+}
+
 .dark .dis-rpt-theme {
   --primary: 140 70% 60%;
   --primary-foreground: 0 0% 100%;

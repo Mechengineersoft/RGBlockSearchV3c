@@ -318,16 +318,17 @@ export default function EColPage() {
                 <Loader2 className="h-8 w-8 animate-spin text-[#2100F2]" />
               </div>
             ) : results?.length ? (
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-[#2100F2] hover:bg-[#2100F2]/90">
-                    {visibleColumns.map(column => (
-                      <TableHead key={column} className="font-bold text-white">
-                        {columnDisplayNames[column] || column}
-                      </TableHead>
-                    ))}
-                  </TableRow>
-                </TableHeader>
+              <div className="overflow-auto">
+                <Table>
+                  <TableHeader className="sticky top-0 z-10">
+                    <TableRow className="bg-[#2100F2] hover:bg-[#2100F2]/90">
+                      {visibleColumns.map(column => (
+                        <TableHead key={column} className="font-bold text-white">
+                          {columnDisplayNames[column] || column}
+                        </TableHead>
+                      ))}
+                    </TableRow>
+                  </TableHeader>
                 <TableBody>
                   {results.map((result, i) => (
                     <TableRow key={i} className={`${i % 2 === 0 ? "bg-white hover:bg-[#2100F2]/5" : "bg-[#2100F2]/5 hover:bg-[#2100F2]/10"}`}>
@@ -338,6 +339,7 @@ export default function EColPage() {
                   ))}
                 </TableBody>
               </Table>
+            </div>
             ) : factoryColor.trim().length > 0 || subColor.trim().length > 0 || type.trim().length > 0 ? (
               <p className="text-center text-muted-foreground my-8">No results found</p>
             ) : (
