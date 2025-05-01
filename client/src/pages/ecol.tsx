@@ -143,7 +143,7 @@ export default function EColPage() {
     thickness: "Thk cm",
     finish: "Finish",
     nos: "Nos",
-    type: "Type",
+    type: "Epoxy Type",
     ratio: "Ratio",
     aKg: "A Kg",
     bKg: "B Kg",
