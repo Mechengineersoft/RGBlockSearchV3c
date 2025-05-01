@@ -156,7 +156,7 @@ export default function EColPage() {
     machine: "Machine",
     remark: "Remark",
     slabNo: "Slab No",
-    factoryColor: "Factory_Colour",
+    factoryColor: "Factory_Colour_Rashi",
     subColor: "Sub_Colour_Of_RashiGranite"
   };
   
