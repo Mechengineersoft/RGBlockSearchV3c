@@ -156,8 +156,8 @@ export default function EColPage() {
     machine: "Machine",
     remark: "Remark",
     slabNo: "Slab No",
-    factoryColor: "Factory Colour",
-    subColor: "Sub Colour"
+    factoryColor: "Factory_Colour",
+    subColor: "Sub_Colour_Of_RashiGranite"
   };
   
   // Get all columns that have data in any row
