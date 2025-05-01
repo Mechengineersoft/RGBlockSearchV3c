@@ -1,0 +1,19 @@
+{
+  "name": "Sheet Search",
+  "short_name": "SheetSearch",
+  "description": "Search and manage sheet data efficiently",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
