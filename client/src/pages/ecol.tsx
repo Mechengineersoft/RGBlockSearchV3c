@@ -333,7 +333,7 @@ export default function EColPage() {
                   {results.map((result, i) => (
                     <TableRow key={i} className={`${i % 2 === 0 ? "bg-white hover:bg-[#2100F2]/5" : "bg-[#2100F2]/5 hover:bg-[#2100F2]/10"}`}>
                       {visibleColumns.map(column => (
-                        <TableCell key={column} className="py-0.5">{result[column as keyof typeof result]}</TableCell>
+                        <TableCell key={column}>{result[column as keyof typeof result]}</TableCell>
                       ))}
                     </TableRow>
                   ))}
