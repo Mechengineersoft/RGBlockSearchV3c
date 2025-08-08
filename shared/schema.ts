@@ -181,6 +181,29 @@ export type MastersheetResult = z.infer<typeof mastersheetResultSchema>;
 export type EpoxyResult = z.infer<typeof epoxyResultSchema>;
 export type GPStockResult = z.infer<typeof gpStockResultSchema>;
 
+export const summary2ResultSchema = z.object({
+  blockNo: z.string(),
+  partNo: z.string(),
+  thkCm: z.string(),
+  slicing: z.string(),
+  export: z.string(),
+  rework: z.string(),
+  edgeCut: z.string(),
+  pkl: z.string(),
+  ctrStock: z.string(),
+  stock: z.string(),
+  d: z.string(),
+  dS: z.string(),
+  eC: z.string(),
+  s: z.string(),
+  sold: z.string(),
+  add: z.string(),
+  dSlash: z.string(),
+  edgeCutting: z.string()
+});
+
+export type Summary2Result = z.infer<typeof summary2ResultSchema>;
+
 export const summaryResultSchema = z.object({
   blockNo: z.string(),
   partNo: z.string(),

@@ -1,5 +1,5 @@
 import { google } from "googleapis";
-import { SearchResult, InsertUser, User, GrindResult, GPStockResult, SummaryResult, CPStockResult } from "@shared/schema";
+import { SearchResult, InsertUser, User, GrindResult, GPStockResult, SummaryResult, CPStockResult, Summary2Result } from "@shared/schema";
 import { config } from './config';
 
 export async function getGPStockData(blockNo: string, partNo?: string, thickness?: string): Promise<GPStockResult[]> {
@@ -170,6 +170,80 @@ export async function getCPStockData(blockNo: string, partNo?: string, thickness
     return results;
   } catch (error) {
     console.error('Error in getCPStockData:', error);
+    throw error;
+  }
+}
+
+export async function getSummary2Data(blockNo: string, partNo?: string, thickness?: string): Promise<Summary2Result[]> {
+  try {
+    console.log('Starting Summary2 search with params:', { blockNo, partNo });
+
+    if (!blockNo || blockNo.trim() === '') {
+      console.log('Block number is empty or undefined');
+      return [];
+    }
+
+    const range = "Summary2!A2:S";
+    console.log('Fetching from range:', range);
+
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SHEET_ID,
+      range,
+      valueRenderOption: 'UNFORMATTED_VALUE',
+    });
+
+    if (!response.data.values) {
+      console.log('No data found in sheet');
+      return [];
+    }
+
+    console.log(`Found ${response.data.values.length} rows in sheet`);
+
+    const results = response.data.values
+      .filter(row => {
+        if (!row[0]) { // Block number is in column A (index 0)
+          console.log('Skipping row with no block number');
+          return false;
+        }
+
+        const rowBlockNo = String(row[0]).toLowerCase().trim();
+        const rowPartNo = row[1] ? String(row[1]).toLowerCase().trim() : '';
+        const rowThickness = row[2] ? String(row[2]).toLowerCase().trim() : '';
+        const searchBlockNo = blockNo.toLowerCase().trim();
+        const searchPartNo = partNo ? partNo.toLowerCase().trim() : '';
+        const searchThickness = thickness ? thickness.toLowerCase().trim() : '';
+
+        const matchesBlock = rowBlockNo === searchBlockNo;
+        const matchesPart = !searchPartNo || rowPartNo === searchPartNo;
+        const matchesThickness = !searchThickness || rowThickness.includes(searchThickness);
+
+        return matchesBlock && matchesPart && matchesThickness;
+      })
+      .map((row): Summary2Result => ({
+        blockNo: String(row[0] || ''),
+        partNo: String(row[1] || ''),
+        thkCm: String(row[2] || ''),
+        slicing: String(row[3] || ''),
+        export: String(row[4] || ''),
+        rework: String(row[5] || ''),
+        edgeCut: String(row[6] || ''),
+        pkl: String(row[7] || ''),
+        ctrStock: String(row[8] || ''),
+        stock: String(row[9] || ''),
+        d: String(row[10] || ''),
+        dS: String(row[11] || ''),
+        eC: String(row[12] || ''),
+        s: String(row[13] || ''),
+        sold: String(row[14] || ''),
+        add: String(row[15] || ''),
+        dSlash: String(row[16] || ''),
+        edgeCutting: String(row[17] || '')
+      }));
+
+    console.log(`Returning ${results.length} Summary2 results`);
+    return results;
+  } catch (error) {
+    console.error('Error in getSummary2Data:', error);
     throw error;
   }
 }

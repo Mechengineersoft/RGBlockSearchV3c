@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { setupAuth } from "./auth";
-import { searchSheetData, getDisReportData, getDisRptData, getGrindData, getPolishData, getEpoxyData, getEColData, getMastersheetData, getGPStockData, getSummaryData, getCPStockData } from "./google-sheets";
+import { searchSheetData, getDisReportData, getDisRptData, getGrindData, getPolishData, getEpoxyData, getEColData, getMastersheetData, getGPStockData, getSummaryData, getCPStockData, getSummary2Data } from "./google-sheets";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   setupAuth(app);
@@ -98,6 +98,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('CPStock search error:', error);
       res.status(500).send("Failed to fetch CPStock data");
+    }
+  });
+
+  app.get("/api/summary2", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    const { blockNo, partNo, thickness } = req.query;
+
+    if (!blockNo || typeof blockNo !== "string") {
+      return res.status(400).send("Block number is required");
+    }
+
+    try {
+      const results = await getSummary2Data(
+        blockNo,
+        partNo as string | undefined,
+        thickness as string | undefined
+      );
+      res.json(results);
+    } catch (error) {
+      console.error('Summary2 search error:', error);
+      res.status(500).send("Failed to fetch Summary2 data");
     }
   });
 

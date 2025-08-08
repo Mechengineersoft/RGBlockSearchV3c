@@ -4,7 +4,7 @@ import { MdDashboard } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { SearchResult, GPStockResult, SummaryResult, CPStockResult } from "@shared/schema";
+import { SearchResult, GPStockResult, SummaryResult, CPStockResult, Summary2Result } from "@shared/schema";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2, Mic, MicOff } from "lucide-react";
 import { useState, useCallback } from "react";
@@ -136,7 +136,24 @@ export default function DashboardPage() {
     }
   });
 
-  const { data: gpStockResults, isLoading: isGPStockLoading, error: gpStockError } = useQuery<GPStockResult[]>({    queryKey: ["/api/gpstock", blockNo, partNo, thickness],
+  const { data: summary2Results, isLoading: isSummary2Loading, error: summary2Error } = useQuery<Summary2Result[]>({
+  queryKey: ["/api/summary2", blockNo, partNo, thickness],
+  enabled: blockNo.trim().length > 0,
+  queryFn: async () => {
+    const params = new URLSearchParams();
+    if (blockNo.trim()) params.append('blockNo', blockNo.trim());
+    if (partNo.trim()) params.append('partNo', partNo.trim());
+    if (thickness.trim()) params.append('thickness', thickness.trim());
+
+    const response = await fetch(`/api/summary2?${params}`);
+    if (!response.ok) {
+      throw new Error(`${response.status}: ${await response.text()}`);
+    }
+    return response.json();
+  }
+});
+
+const { data: gpStockResults, isLoading: isGPStockLoading, error: gpStockError } = useQuery<GPStockResult[]>({    queryKey: ["/api/gpstock", blockNo, partNo, thickness],
     enabled: blockNo.trim().length > 0,
     queryFn: async () => {
       const params = new URLSearchParams();
@@ -348,20 +365,56 @@ export default function DashboardPage() {
   }
 
   const gpStockColumnsWithData = new Set<string>();
-  if (gpStockResults?.length) {
-    gpStockResults.forEach(result => {
-      Object.entries(result).forEach(([key, value]) => {
-        if (value && value.trim() !== '') {
-          gpStockColumnsWithData.add(key);
-        }
-      });
+const summary2ColumnsWithData = new Set<string>();
+if (gpStockResults?.length) {
+  gpStockResults.forEach(result => {
+    Object.entries(result).forEach(([key, value]) => {
+      if (value && value.trim() !== '') {
+        gpStockColumnsWithData.add(key);
+      }
     });
-  }
+  });
+}
+if (summary2Results?.length) {
+  summary2Results.forEach(result => {
+    Object.entries(result).forEach(([key, value]) => {
+      if (value && value.trim() !== '') {
+        summary2ColumnsWithData.add(key);
+      }
+    });
+  });
+}
 
   const visibleMastersheetColumns = mastersheetColumnOrder.filter(column => mastersheetColumnsWithData.has(column));
   const visibleSummaryColumns = summaryColumnOrder.filter(column => summaryColumnsWithData.has(column));
   const visibleCPStockColumns = cpStockColumnOrder.filter(column => cpStockColumnsWithData.has(column));
   const visibleGPStockColumns = gpStockColumnOrder.filter(column => gpStockColumnsWithData.has(column));
+const summary2ColumnOrder = [
+  "blockNo", "part", "thkCm", "slicing1", "export2", "rework3", "edgeCut4",
+  "pkl5", "ctrStock6", "stock6", "d7", "ds7", "ec7", "s7", "sold9", "add",
+  "ds", "edgeCutting"
+];
+const summary2DisplayNames: Record<string, string> = {
+  blockNo: "Block No",
+  part: "Part",
+  thkCm: "Thk cm",
+  slicing1: "1 Slicing",
+  export2: "2 Export",
+  rework3: "3 Rework",
+  edgeCut4: "4 Edge Cut",
+  pkl5: "5 Pkl",
+  ctrStock6: "6 Ctr Stock",
+  stock6: "6 Stock",
+  d7: "7 D",
+  ds7: "7 D/S",
+  ec7: "7 E/C",
+  s7: "7 S",
+  sold9: "9 Sold",
+  add: "Add",
+  ds: "D/S",
+  edgeCutting: "Edge Cutting"
+};
+const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2ColumnsWithData.has(column));
 
   return (
     <Layout>
@@ -509,10 +562,136 @@ export default function DashboardPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Statistics</CardTitle>
+              <CardTitle>Summary 2</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>Statistics will be displayed here</p>
+              <div className="space-y-4">
+                <div className="flex flex-row gap-2 overflow-x-auto">
+                  <div className="min-w-0 flex-1">
+                    <div className="space-y-1">
+                      <div className="relative">
+                        <Input
+                          placeholder="Block No (req)"
+                          value={blockNo}
+                          onChange={(e) => setBlockNo(e.target.value)}
+                          className="h-9 text-sm pr-8"
+                        />
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7"
+                          onClick={() => startListening('blockNo')}
+                          disabled={isListening}
+                        >
+                          {isListening && activeInput === 'blockNo' ? (
+                            <MicOff className="h-4 w-4 text-red-500" />
+                          ) : (
+                            <Mic className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
+                      {blockNo.trim().length === 0 && (
+                        <p className="text-xs text-destructive">Required</p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="relative">
+                      <Input
+                        placeholder="Part No"
+                        value={partNo}
+                        onChange={(e) => setPartNo(e.target.value)}
+                        className="h-9 text-sm pr-8"
+                      />
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7"
+                        onClick={() => startListening('partNo')}
+                        disabled={isListening}
+                      >
+                        {isListening && activeInput === 'partNo' ? (
+                          <MicOff className="h-4 w-4 text-red-500" />
+                        ) : (
+                          <Mic className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="relative">
+                      <Input
+                        placeholder="Thickness"
+                        value={thickness}
+                        onChange={(e) => setThickness(e.target.value)}
+                        className="h-9 text-sm pr-8"
+                      />
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7"
+                        onClick={() => startListening('thickness')}
+                        disabled={isListening}
+                      >
+                        {isListening && activeInput === 'thickness' ? (
+                          <MicOff className="h-4 w-4 text-red-500" />
+                        ) : (
+                          <Mic className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-end gap-2">
+                  <Button 
+                    variant="default" 
+                    size="sm" 
+                    onClick={handleClear} 
+                    className="h-9"
+                  >
+                    Clear
+                  </Button>
+                </div>
+
+                {summary2Error ? (
+                  <div className="text-center text-destructive">
+                    <p>Failed to fetch search results. Please try again later.</p>
+                    <p className="text-sm mt-1">Error: {summary2Error.message}</p>
+                  </div>
+                ) : isSummary2Loading ? (
+                  <div className="flex justify-center">
+                    <Loader2 className="h-8 w-8 animate-spin" />
+                  </div>
+                ) : summary2Results?.length ? (
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="bg-purple-700 hover:bg-purple-800">
+                          {visibleSummary2Columns.map(column => (
+                            <TableHead key={column} className="font-bold text-white">
+                              {summary2DisplayNames[column] || column}
+                            </TableHead>
+                          ))}
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {summary2Results.map((result, i) => (
+                          <TableRow key={i} className={`${i % 2 === 0 ? "bg-white hover:bg-purple-50" : "bg-purple-50 hover:bg-purple-100"}`}>
+                            {visibleSummary2Columns.map(column => (
+                              <TableCell key={column}>{result[column as keyof typeof result]}</TableCell>
+                            ))}
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                ) : blockNo.trim().length > 0 ? (
+                  <p className="text-center text-muted-foreground">No results found</p>
+                ) : (
+                  <p className="text-center text-muted-foreground">Enter a block number to search</p>
+                )}
+              </div>
             </CardContent>
           </Card>
           
