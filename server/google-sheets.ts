@@ -1,6 +1,82 @@
 import { google } from "googleapis";
-import { SearchResult, InsertUser, User, GrindResult } from "@shared/schema";
+import { SearchResult, InsertUser, User, GrindResult, GPStockResult, SummaryResult, CPStockResult } from "@shared/schema";
 import { config } from './config';
+
+export async function getGPStockData(blockNo: string, partNo?: string, thickness?: string): Promise<GPStockResult[]> {
+  try {
+    console.log('Starting GPStock search with params:', { blockNo, partNo });
+
+    if (!blockNo || blockNo.trim() === '') {
+      console.log('Block number is empty or undefined');
+      return [];
+    }
+
+    const range = "GPStock!A2:S";
+    console.log('Fetching from range:', range);
+
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SHEET_ID,
+      range,
+      valueRenderOption: 'UNFORMATTED_VALUE',
+    });
+
+    if (!response.data.values) {
+      console.log('No data found in sheet');
+      return [];
+    }
+
+    console.log(`Found ${response.data.values.length} rows in sheet`);
+
+    const results = response.data.values
+      .filter(row => {
+        if (!row[1]) { // Block number is in column B (index 1)
+          console.log('Skipping row with no block number');
+          return false;
+        }
+
+        const rowBlockNo = String(row[1]).toLowerCase().trim();
+        const rowPartNo = row[2] ? String(row[2]).toLowerCase().trim() : '';
+        const rowThickness = row[6] ? String(row[6]).toLowerCase().trim() : '';
+        const searchBlockNo = blockNo.toLowerCase().trim();
+        const searchPartNo = partNo ? partNo.toLowerCase().trim() : '';
+        const searchThickness = thickness ? thickness.toLowerCase().trim() : '';
+
+        const matchesBlock = rowBlockNo === searchBlockNo;
+        const matchesPart = !searchPartNo || rowPartNo === searchPartNo;
+        const matchesThickness = !searchThickness || rowThickness.includes(searchThickness);
+
+        return matchesBlock && matchesPart && matchesThickness;
+      })
+      .map((row): GPStockResult => ({
+        slicingDate: String(row[0] || ''),
+        blockNo: String(row[1] || ''),
+        partNo: String(row[2] || ''),
+        colorName: String(row[3] || ''),
+        length: String(row[4] || ''),
+        height: String(row[5] || ''),
+        thickness: String(row[6] || ''),
+        nos: String(row[7] || ''),
+        dispatched: String(row[8] || ''),
+        eCut: String(row[9] || ''),
+        balance: String(row[10] || ''),
+        stockNos: String(row[11] || ''),
+        m2: String(row[12] || ''),
+        remarks: String(row[13] || ''),
+        location: String(row[14] || ''),
+        mainLocation: String(row[15] || ''),
+        colourName: String(row[16] || ''),
+        subColour: String(row[17] || ''),
+        sp: String(row[18] || ''),
+        remark2: String(row[19] || '')
+      }));
+
+    console.log(`Returning ${results.length} GPStock results`);
+    return results;
+  } catch (error) {
+    console.error('Error in getGPStockData:', error);
+    throw error;
+  }
+}
 
 interface DisReportResult {
   blockNo: string;
@@ -18,6 +94,85 @@ const auth = new google.auth.GoogleAuth({
 
 const sheets = google.sheets({ version: 'v4', auth });
 const SHEET_ID = config.googleSheetsId;
+
+export async function getCPStockData(blockNo: string, partNo?: string, thickness?: string): Promise<CPStockResult[]> {
+  try {
+    console.log('Starting CPStock search with params:', { blockNo, partNo });
+
+    if (!blockNo || blockNo.trim() === '') {
+      console.log('Block number is empty or undefined');
+      return [];
+    }
+
+    const range = "CPStock!A2:W";
+    console.log('Fetching from range:', range);
+
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SHEET_ID,
+      range,
+      valueRenderOption: 'UNFORMATTED_VALUE',
+    });
+
+    if (!response.data.values) {
+      console.log('No data found in sheet');
+      return [];
+    }
+
+    console.log(`Found ${response.data.values.length} rows in sheet`);
+
+    const results = response.data.values
+      .filter(row => {
+        if (!row[3]) { // Block number is in column D (index 3)
+          console.log('Skipping row with no block number');
+          return false;
+        }
+
+        const rowBlockNo = String(row[3]).toLowerCase().trim();
+        const rowPartNo = row[4] ? String(row[4]).toLowerCase().trim() : '';
+        const rowThickness = row[7] ? String(row[7]).toLowerCase().trim() : '';
+        const searchBlockNo = blockNo.toLowerCase().trim();
+        const searchPartNo = partNo ? partNo.toLowerCase().trim() : '';
+        const searchThickness = thickness ? thickness.toLowerCase().trim() : '';
+
+        const matchesBlock = rowBlockNo === searchBlockNo;
+        const matchesPart = !searchPartNo || rowPartNo === searchPartNo;
+        const matchesThickness = !searchThickness || rowThickness.includes(searchThickness);
+
+        return matchesBlock && matchesPart && matchesThickness;
+      })
+      .map((row): CPStockResult => ({
+        type: String(row[0] || ''),
+        slicedOn: String(row[1] || ''),
+        colourName: String(row[2] || ''),
+        blockNo: String(row[3] || ''),
+        partNo: String(row[4] || ''),
+        length: String(row[5] || ''),
+        height: String(row[6] || ''),
+        thickness: String(row[7] || ''),
+        nos: String(row[8] || ''),
+        dispatched: String(row[9] || ''),
+        edgeCutting: String(row[10] || ''),
+        balance: String(row[11] || ''),
+        m2: String(row[12] || ''),
+        sidePc: String(row[13] || ''),
+        location: String(row[14] || ''),
+        remarks: String(row[15] || ''),
+        facColour: String(row[16] || ''),
+        subColour: String(row[17] || ''),
+        check: String(row[18] || ''),
+        null: String(row[19] || ''),
+        d: String(row[20] || ''),
+        act: String(row[21] || ''),
+        r: String(row[22] || '')
+      }));
+
+    console.log(`Returning ${results.length} CPStock results`);
+    return results;
+  } catch (error) {
+    console.error('Error in getCPStockData:', error);
+    throw error;
+  }
+}
 
 export async function getDisReportData(blockNo: string, thickness?: string): Promise<DisReportResult[]> {
   try {
@@ -67,7 +222,7 @@ export async function getDisReportData(blockNo: string, thickness?: string): Pro
         });
 
         const matchesBlock = rowBlockNo === searchBlockNo;
-        const matchesThickness = !searchThickness || rowThickness === searchThickness;
+        const matchesThickness = !searchThickness || rowThickness.includes(searchThickness);
 
         console.log('Match results:', {
           matchesBlock,
@@ -96,6 +251,193 @@ export async function getDisReportData(blockNo: string, thickness?: string): Pro
     throw error;
   }
 }
+
+import { MastersheetResult } from '@shared/schema';
+
+export async function getSummaryData(blockNo: string, partNo?: string, thickness?: string): Promise<SummaryResult[]> {
+  try {
+    console.log('Starting Summary search with params:', { blockNo, partNo });
+
+    if (!blockNo || blockNo.trim() === '') {
+      console.log('Block number is empty or undefined');
+      return [];
+    }
+
+    const range = "Summary!A2:S";
+    console.log('Fetching from range:', range);
+
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SHEET_ID,
+      range,
+      valueRenderOption: 'UNFORMATTED_VALUE',
+    });
+
+    if (!response.data.values) {
+      console.log('No data found in sheet');
+      return [];
+    }
+
+    console.log(`Found ${response.data.values.length} rows in sheet`);
+
+    const results = response.data.values
+      .filter(row => {
+        if (!row[0]) { // Block number is in column A (index 0)
+          console.log('Skipping row with no block number');
+          return false;
+        }
+
+        const rowBlockNo = String(row[0]).toLowerCase().trim();
+        const rowPartNo = row[1] ? String(row[1]).toLowerCase().trim() : '';
+        const rowThickness = row[2] ? String(row[2]).toLowerCase().trim() : '';
+        const searchBlockNo = blockNo.toLowerCase().trim();
+        const searchPartNo = partNo ? partNo.toLowerCase().trim() : '';
+        const searchThickness = thickness ? thickness.toLowerCase().trim() : '';
+
+        const matchesBlock = rowBlockNo === searchBlockNo;
+        const matchesPart = !searchPartNo || rowPartNo === searchPartNo;
+        const matchesThickness = !searchThickness || rowThickness.includes(searchThickness);
+
+        return matchesBlock && matchesPart && matchesThickness;
+      })
+      .map((row): SummaryResult => ({
+        blockNo: String(row[0] || ''),
+        partNo: String(row[1] || ''),
+        thkCm: String(row[2] || ''),
+        slicing: String(row[3] || ''),
+        export: String(row[4] || ''),
+        rework: String(row[5] || ''),
+        edgeCut: String(row[6] || ''),
+        pkl: String(row[7] || ''),
+        ctrStock: String(row[8] || ''),
+        stock: String(row[9] || ''),
+        d: String(row[10] || ''),
+        dS: String(row[11] || ''),
+        eC: String(row[12] || ''),
+        s: String(row[13] || ''),
+        sold: String(row[14] || ''),
+        add: String(row[15] || ''),
+        dSlash: String(row[16] || ''),
+        edgeCutting: String(row[17] || '')
+      }));
+
+    console.log(`Returning ${results.length} Summary results`);
+    return results;
+  } catch (error) {
+    console.error('Error in getSummaryData:', error);
+    throw error;
+  }
+}
+
+export async function getMastersheetData(blockNo: string, partNo?: string, thickness?: string): Promise<MastersheetResult[]> {
+  try {
+    console.log('Starting Mastersheet search with params:', { blockNo, partNo });
+
+    if (!blockNo || blockNo.trim() === '') {
+      console.log('Block number is empty or undefined');
+      return [];
+    }
+
+    const range = "Mastersheet!A2:AZ";
+    console.log('Fetching from range:', range);
+
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SHEET_ID,
+      range,
+      valueRenderOption: 'UNFORMATTED_VALUE',
+    });
+
+    if (!response.data.values) {
+      console.log('No data found in sheet');
+      return [];
+    }
+
+    console.log(`Found ${response.data.values.length} rows in sheet`);
+
+    const results = response.data.values
+      .filter(row => {
+        if (!row[0]) {
+          console.log('Skipping row with no block number');
+          return false;
+        }
+
+        const rowBlockNo = String(row[0]).toLowerCase().trim();
+        const rowPartNo = row[1] ? String(row[1]).toLowerCase().trim() : '';
+        const rowThickness = row[2] ? String(row[2]).toLowerCase().trim() : '';
+        const searchBlockNo = blockNo.toLowerCase().trim();
+        const searchPartNo = partNo ? partNo.toLowerCase().trim() : '';
+        const searchThickness = thickness ? thickness.toLowerCase().trim() : '';
+
+        const matchesBlock = rowBlockNo === searchBlockNo;
+        const matchesPart = !searchPartNo || rowPartNo === searchPartNo;
+        const matchesThickness = !searchThickness || rowThickness.includes(searchThickness);
+
+        return matchesBlock && matchesPart && matchesThickness;
+      })
+      .map((row): MastersheetResult => ({
+        blockNo: String(row[0] || ''),
+        partNo: String(row[1] || ''),
+        facStoneColor: String(row[2] || ''),
+        subColor: String(row[3] || ''),
+        mnL: String(row[4] || ''),
+        mnH: String(row[5] || ''),
+        mnW: String(row[6] || ''),
+        mnCbm: String(row[7] || ''),
+        fnL: String(row[8] || ''),
+        fnH: String(row[9] || ''),
+        fnW: String(row[10] || ''),
+        fnCbm: String(row[11] || ''),
+        location: String(row[12] || ''),
+        type: String(row[13] || ''),
+        remarks2: String(row[14] || ''),
+        rcvdDt: String(row[15] || ''),
+        markerNo: String(row[16] || ''),
+        sp: String(row[17] || ''),
+        mgL: String(row[18] || ''),
+        mgH: String(row[19] || ''),
+        mgW: String(row[20] || ''),
+        mgCbm: String(row[21] || ''),
+        quality: String(row[22] || ''),
+        shift: String(row[23] || ''),
+        mc: String(row[24] || ''),
+        date: String(row[25] || ''),
+        slabL: String(row[26] || ''),
+        slabH: String(row[27] || ''),
+        t1_6: String(row[28] || ''),
+        t1_8: String(row[29] || ''),
+        t2: String(row[30] || ''),
+        t3: String(row[31] || ''),
+        t4: String(row[32] || ''),
+        t5: String(row[33] || ''),
+        t6: String(row[34] || ''),
+        t7: String(row[35] || ''),
+        t8: String(row[36] || ''),
+        t10: String(row[37] || ''),
+        t12: String(row[38] || ''),
+        t15: String(row[39] || ''),
+        t20: String(row[40] || ''),
+        t25: String(row[41] || ''),
+        width: String(row[42] || ''),
+        sliceNos: String(row[43] || ''),
+        leftOverWidth: String(row[44] || ''),
+        wastePctFn: String(row[45] || ''),
+        wastePctFn5: String(row[46] || ''),
+        wastePctMn: String(row[47] || ''),
+        total: String(row[48] || ''),
+        oprSft: String(row[49] || ''),
+        sln: String(row[50] || ''),
+        stDate: String(row[51] || ''),
+        r: String(row[52] || '')
+      }));
+
+    console.log(`Returning ${results.length} Mastersheet results`);
+    return results;
+  } catch (error) {
+    console.error('Error in getMastersheetData:', error);
+    throw error;
+  }
+}
+
+
 
 interface DisRptResult {
   blockNo: string;

@@ -14,6 +14,7 @@ import EpoxyPage from "@/pages/epoxy";
 import EColPage from "@/pages/ecol";
 import GrindPage from "@/pages/grind";
 import PolishPage from "@/pages/polish";
+import DashboardPage from "@/pages/dashboard";
 import { ProtectedRoute } from "./lib/protected-route";
 import { AuthProvider } from "./hooks/use-auth";
 
@@ -21,6 +22,7 @@ function Router() {
   return (
     <Switch>
       <ProtectedRoute path="/" component={HomePage} />
+      <ProtectedRoute path="/dashboard" component={DashboardPage} />
       <ProtectedRoute path="/dis-rpt" component={DisRpt} />
       <ProtectedRoute path="/epoxy" component={EpoxyPage} />
       <ProtectedRoute path="/ecol" component={EColPage} />

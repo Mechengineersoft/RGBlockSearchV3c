@@ -5,13 +5,18 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useAuth } from "@/hooks/use-auth";
 import { SearchResult } from "@shared/schema";
 import { useQuery } from "@tanstack/react-query";
-import { LogOut, Search, Loader2, Mic, MicOff, FileText } from "lucide-react";
+import { LogOut, Search, Loader2, Mic, MicOff, FileText, LayoutDashboard } from "lucide-react";
 import { useState, useCallback, useEffect } from "react";
 import { useLocation } from "wouter";
 
 
 export default function HomePage() {
   const { logoutMutation } = useAuth();
+  const [, navigate] = useLocation();
+
+  const goToDashboard = () => {
+    navigate('/dashboard');
+  };
   const [location] = useLocation();
   const [blockNo, setBlockNo] = useState("");
   const [partNo, setPartNo] = useState("");
@@ -190,6 +195,14 @@ export default function HomePage() {
         <div className="container mx-auto px-0 h-12 flex items-center justify-between">
           <h1 className="text-xl font-bold pl-2">Sheet Search</h1>
           <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={goToDashboard}
+              className="hover:bg-accent"
+            >
+              <LayoutDashboard className="h-5 w-5" />
+            </Button>
             <Button
               variant="ghost"
               size="icon"
