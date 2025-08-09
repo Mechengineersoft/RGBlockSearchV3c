@@ -439,7 +439,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                           placeholder="Block No (req)"
                           value={blockNo}
                           onChange={(e) => setBlockNo(e.target.value)}
-                          className="h-9 text-sm pr-8"
+                          className="h-9 text-sm pr-8 border-purple-200 focus:border-purple-400 hover:border-purple-300"
                         />
                         <Button
                           variant="ghost"
@@ -466,7 +466,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                         placeholder="Part No"
                         value={partNo}
                         onChange={(e) => setPartNo(e.target.value)}
-                        className="h-9 text-sm pr-8"
+                        className="h-9 text-sm pr-8 border-purple-200 focus:border-purple-400 hover:border-purple-300"
                       />
                       <Button
                         variant="ghost"
@@ -489,7 +489,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                         placeholder="Thickness"
                         value={thickness}
                         onChange={(e) => setThickness(e.target.value)}
-                        className="h-9 text-sm pr-8"
+                        className="h-9 text-sm pr-8 border-purple-200 focus:border-purple-400 hover:border-purple-300"
                       />
                       <Button
                         variant="ghost"
