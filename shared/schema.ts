@@ -162,7 +162,6 @@ export const gpStockResultSchema = z.object({
   nos: z.string(),
   dispatched: z.string(),
   eCut: z.string(),
-  balance: z.string(),
   stockNos: z.string(),
   m2: z.string(),
   remarks: z.string(),

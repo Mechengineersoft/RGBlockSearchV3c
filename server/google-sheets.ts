@@ -58,16 +58,15 @@ export async function getGPStockData(blockNo: string, partNo?: string, thickness
         nos: String(row[7] || ''),
         dispatched: String(row[8] || ''),
         eCut: String(row[9] || ''),
-        balance: String(row[10] || ''),
-        balanceStockNos: String(row[11] || ''),
-        m2: String(row[12] || ''),
-        remarks: String(row[13] || ''),
-        location: String(row[14] || ''),
-        mainLocation: String(row[15] || ''),
-        colourName: String(row[16] || ''),
-        subColour: String(row[17] || ''),
-        sp: String(row[18] || ''),
-        remark2: String(row[19] || '')
+        stockNos: String(row[10] || ''),
+        m2: String(row[11] || ''),
+        remarks: String(row[12] || ''),
+        location: String(row[13] || ''),
+        mainLocation: String(row[14] || ''),
+        colourName: String(row[15] || ''),
+        subColour: String(row[16] || ''),
+        sp: String(row[17] || ''),
+        remark2: String(row[18] || '').trim()
       }));
 
     console.log(`Returning ${results.length} GPStock results`);
