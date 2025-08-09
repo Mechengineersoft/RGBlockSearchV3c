@@ -513,7 +513,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                     variant="default" 
                     size="sm" 
                     onClick={handleClear} 
-                    className="h-9"
+                    className="h-9 bg-purple-700 hover:bg-purple-800 text-white"
                   >
                     Clear
                   </Button>
@@ -574,7 +574,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                           placeholder="Block No (req)"
                           value={blockNo}
                           onChange={(e) => setBlockNo(e.target.value)}
-                          className="h-9 text-sm pr-8"
+                          className="h-9 text-sm pr-8 border-cyan-200 focus:border-cyan-400 hover:border-cyan-300"
                         />
                         <Button
                           variant="ghost"
@@ -586,7 +586,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                           {isListening && activeInput === 'blockNo' ? (
                             <MicOff className="h-4 w-4 text-red-500" />
                           ) : (
-                            <Mic className="h-4 w-4" />
+                            <Mic className="h-4 w-4 text-cyan-400 hover:text-cyan-600" />
                           )}
                         </Button>
                       </div>
@@ -601,7 +601,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                         placeholder="Part No"
                         value={partNo}
                         onChange={(e) => setPartNo(e.target.value)}
-                        className="h-9 text-sm pr-8"
+                        className="h-9 text-sm pr-8 border-cyan-200 focus:border-cyan-400 hover:border-cyan-300"
                       />
                       <Button
                         variant="ghost"
@@ -613,7 +613,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                         {isListening && activeInput === 'partNo' ? (
                           <MicOff className="h-4 w-4 text-red-500" />
                         ) : (
-                          <Mic className="h-4 w-4" />
+                          <Mic className="h-4 w-4 text-cyan-400 hover:text-cyan-600" />
                         )}
                       </Button>
                     </div>
@@ -624,7 +624,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                         placeholder="Thickness"
                         value={thickness}
                         onChange={(e) => setThickness(e.target.value)}
-                        className="h-9 text-sm pr-8"
+                        className="h-9 text-sm pr-8 border-cyan-200 focus:border-cyan-400 hover:border-cyan-300"
                       />
                       <Button
                         variant="ghost"
@@ -636,7 +636,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                         {isListening && activeInput === 'thickness' ? (
                           <MicOff className="h-4 w-4 text-red-500" />
                         ) : (
-                          <Mic className="h-4 w-4" />
+                          <Mic className="h-4 w-4 text-cyan-400 hover:text-cyan-600" />
                         )}
                       </Button>
                     </div>
@@ -648,7 +648,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                     variant="default" 
                     size="sm" 
                     onClick={handleClear} 
-                    className="h-9"
+                    className="h-9 bg-cyan-700 hover:bg-cyan-800 text-white"
                   >
                     Clear
                   </Button>
@@ -667,7 +667,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                   <div className="overflow-x-auto">
                     <Table>
                       <TableHeader>
-                        <TableRow className="bg-purple-700 hover:bg-purple-800">
+                        <TableRow className="bg-cyan-700 hover:bg-cyan-800">
                           {visibleSummary2Columns.map(column => (
                             <TableHead key={column} className="font-bold text-white">
                               {summary2DisplayNames[column] || column}
@@ -677,7 +677,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                       </TableHeader>
                       <TableBody>
                         {summary2Results.map((result, i) => (
-                          <TableRow key={i} className={`${i % 2 === 0 ? "bg-white hover:bg-purple-50" : "bg-purple-50 hover:bg-purple-100"}`}>
+                          <TableRow key={i} className={`${i % 2 === 0 ? "bg-white hover:bg-cyan-50" : "bg-cyan-50 hover:bg-cyan-100"}`}>
                             {visibleSummary2Columns.map(column => (
                               <TableCell key={column}>{result[column as keyof typeof result]}</TableCell>
                             ))}
@@ -718,7 +718,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                           placeholder="Block No (req)"
                           value={blockNo}
                           onChange={(e) => setBlockNo(e.target.value)}
-                          className="h-9 text-sm pr-8"
+                          className="h-9 text-sm pr-8 border-orange-200 focus:border-orange-400 hover:border-orange-300"
                         />
                         <Button
                           variant="ghost"
@@ -730,7 +730,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                           {isListening && activeInput === 'blockNo' ? (
                             <MicOff className="h-4 w-4 text-red-500" />
                           ) : (
-                            <Mic className="h-4 w-4" />
+                            <Mic className="h-4 w-4 text-orange-400 hover:text-orange-600" />
                           )}
                         </Button>
                       </div>
@@ -745,7 +745,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                         placeholder="Part No"
                         value={partNo}
                         onChange={(e) => setPartNo(e.target.value)}
-                        className="h-9 text-sm pr-8"
+                        className="h-9 text-sm pr-8 border-orange-200 focus:border-orange-400 hover:border-orange-300"
                       />
                       <Button
                         variant="ghost"
@@ -757,7 +757,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                         {isListening && activeInput === 'partNo' ? (
                           <MicOff className="h-4 w-4 text-red-500" />
                         ) : (
-                          <Mic className="h-4 w-4" />
+                          <Mic className="h-4 w-4 text-orange-400 hover:text-orange-600" />
                         )}
                       </Button>
                     </div>
@@ -768,7 +768,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                         placeholder="Thickness"
                         value={thickness}
                         onChange={(e) => setThickness(e.target.value)}
-                        className="h-9 text-sm pr-8"
+                        className="h-9 text-sm pr-8 border-orange-200 focus:border-orange-400 hover:border-orange-300"
                       />
                       <Button
                         variant="ghost"
@@ -780,7 +780,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                         {isListening && activeInput === 'thickness' ? (
                           <MicOff className="h-4 w-4 text-red-500" />
                         ) : (
-                          <Mic className="h-4 w-4" />
+                          <Mic className="h-4 w-4 text-orange-400 hover:text-orange-600" />
                         )}
                       </Button>
                     </div>
@@ -792,7 +792,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                     variant="default" 
                     size="sm" 
                     onClick={handleClear} 
-                    className="h-9"
+                    className="h-9 bg-orange-700 hover:bg-orange-800 text-white"
                   >
                     Clear
                   </Button>
@@ -811,7 +811,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                   <div className="overflow-x-auto">
                     <Table>
                       <TableHeader>
-                        <TableRow className="bg-purple-700 hover:bg-purple-800">
+                        <TableRow className="bg-orange-700 hover:bg-orange-800">
                           {visibleMastersheetColumns.map(column => (
                             <TableHead key={column} className="font-bold text-white">
                               {columnDisplayNames[column] || column}
@@ -821,7 +821,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                       </TableHeader>
                       <TableBody>
                         {mastersheetResults.map((result, i) => (
-                          <TableRow key={i} className={`${i % 2 === 0 ? "bg-white hover:bg-purple-50" : "bg-purple-50 hover:bg-purple-100"}`}>
+                          <TableRow key={i} className={`${i % 2 === 0 ? "bg-white hover:bg-orange-50" : "bg-orange-50 hover:bg-orange-100"}`}>
                             {visibleMastersheetColumns.map(column => (
                               <TableCell key={column}>{result[column as keyof typeof result]}</TableCell>
                             ))}
@@ -853,7 +853,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                           placeholder="Block No (req)"
                           value={blockNo}
                           onChange={(e) => setBlockNo(e.target.value)}
-                          className="h-9 text-sm pr-8"
+                          className="h-9 text-sm pr-8 border-green-200 focus:border-green-400 hover:border-green-300"
                         />
                         <Button
                           variant="ghost"
@@ -865,7 +865,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                           {isListening && activeInput === 'blockNo' ? (
                             <MicOff className="h-4 w-4 text-red-500" />
                           ) : (
-                            <Mic className="h-4 w-4" />
+                            <Mic className="h-4 w-4 text-green-400 hover:text-green-600" />
                           )}
                         </Button>
                       </div>
@@ -880,7 +880,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                         placeholder="Part No"
                         value={partNo}
                         onChange={(e) => setPartNo(e.target.value)}
-                        className="h-9 text-sm pr-8"
+                        className="h-9 text-sm pr-8 border-green-200 focus:border-green-400 hover:border-green-300"
                       />
                       <Button
                         variant="ghost"
@@ -892,7 +892,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                         {isListening && activeInput === 'partNo' ? (
                           <MicOff className="h-4 w-4 text-red-500" />
                         ) : (
-                          <Mic className="h-4 w-4" />
+                          <Mic className="h-4 w-4 text-green-400 hover:text-green-600" />
                         )}
                       </Button>
                     </div>
@@ -903,7 +903,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                         placeholder="Thickness"
                         value={thickness}
                         onChange={(e) => setThickness(e.target.value)}
-                        className="h-9 text-sm pr-8"
+                        className="h-9 text-sm pr-8 border-green-200 focus:border-green-400 hover:border-green-300"
                       />
                       <Button
                         variant="ghost"
@@ -915,7 +915,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                         {isListening && activeInput === 'thickness' ? (
                           <MicOff className="h-4 w-4 text-red-500" />
                         ) : (
-                          <Mic className="h-4 w-4" />
+                          <Mic className="h-4 w-4 text-green-400 hover:text-green-600" />
                         )}
                       </Button>
                     </div>
@@ -927,7 +927,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                     variant="default" 
                     size="sm" 
                     onClick={handleClear} 
-                    className="h-9"
+                    className="h-9 bg-green-700 hover:bg-green-800 text-white"
                   >
                     Clear
                   </Button>
@@ -946,7 +946,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                   <div className="overflow-x-auto">
                     <Table>
                       <TableHeader>
-                        <TableRow className="bg-purple-700 hover:bg-purple-800">
+                        <TableRow className="bg-green-700 hover:bg-green-800">
                           {visibleGPStockColumns.map(column => (
                             <TableHead key={column} className="font-bold text-white">
                               {gpStockDisplayNames[column] || column}
@@ -956,7 +956,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                       </TableHeader>
                       <TableBody>
                         {gpStockResults.map((result, i) => (
-                          <TableRow key={i} className={`${i % 2 === 0 ? "bg-white hover:bg-purple-50" : "bg-purple-50 hover:bg-purple-100"}`}>
+                          <TableRow key={i} className={`${i % 2 === 0 ? "bg-white hover:bg-green-50" : "bg-green-50 hover:bg-green-100"}`}>
                             {visibleGPStockColumns.map(column => (
                               <TableCell key={column}>{result[column as keyof typeof result]}</TableCell>
                             ))}
@@ -988,7 +988,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                           placeholder="Block No (req)"
                           value={blockNo}
                           onChange={(e) => setBlockNo(e.target.value)}
-                          className="h-9 text-sm pr-8"
+                          className="h-9 text-sm pr-8 border-blue-200 focus:border-blue-400 hover:border-blue-300"
                         />
                         <Button
                           variant="ghost"
@@ -1000,7 +1000,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                           {isListening && activeInput === 'blockNo' ? (
                             <MicOff className="h-4 w-4 text-red-500" />
                           ) : (
-                            <Mic className="h-4 w-4" />
+                            <Mic className="h-4 w-4 text-blue-400 hover:text-blue-600" />
                           )}
                         </Button>
                       </div>
@@ -1015,7 +1015,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                         placeholder="Part No"
                         value={partNo}
                         onChange={(e) => setPartNo(e.target.value)}
-                        className="h-9 text-sm pr-8"
+                        className="h-9 text-sm pr-8 border-blue-200 focus:border-blue-400 hover:border-blue-300"
                       />
                       <Button
                         variant="ghost"
@@ -1027,7 +1027,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                         {isListening && activeInput === 'partNo' ? (
                           <MicOff className="h-4 w-4 text-red-500" />
                         ) : (
-                          <Mic className="h-4 w-4" />
+                          <Mic className="h-4 w-4 text-blue-400 hover:text-blue-600" />
                         )}
                       </Button>
                     </div>
@@ -1038,7 +1038,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                         placeholder="Thickness"
                         value={thickness}
                         onChange={(e) => setThickness(e.target.value)}
-                        className="h-9 text-sm pr-8"
+                        className="h-9 text-sm pr-8 border-blue-200 focus:border-blue-400 hover:border-blue-300"
                       />
                       <Button
                         variant="ghost"
@@ -1050,7 +1050,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                         {isListening && activeInput === 'thickness' ? (
                           <MicOff className="h-4 w-4 text-red-500" />
                         ) : (
-                          <Mic className="h-4 w-4" />
+                          <Mic className="h-4 w-4 text-blue-400 hover:text-blue-600" />
                         )}
                       </Button>
                     </div>
@@ -1062,7 +1062,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                     variant="default" 
                     size="sm" 
                     onClick={handleClear} 
-                    className="h-9"
+                    className="h-9 bg-blue-700 hover:bg-blue-800 text-white"
                   >
                     Clear
                   </Button>
@@ -1081,7 +1081,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                   <div className="overflow-x-auto">
                     <Table>
                       <TableHeader>
-                        <TableRow className="bg-purple-700 hover:bg-purple-800">
+                        <TableRow className="bg-blue-700 hover:bg-blue-800">
                           {visibleCPStockColumns.map(column => (
                             <TableHead key={column} className="font-bold text-white">
                               {cpStockDisplayNames[column] || column}
@@ -1091,7 +1091,7 @@ const visibleSummary2Columns = summary2ColumnOrder.filter(column => summary2Colu
                       </TableHeader>
                       <TableBody>
                         {cpStockResults.map((result, i) => (
-                          <TableRow key={i} className={`${i % 2 === 0 ? "bg-white hover:bg-purple-50" : "bg-purple-50 hover:bg-purple-100"}`}>
+                          <TableRow key={i} className={`${i % 2 === 0 ? "bg-white hover:bg-blue-50" : "bg-blue-50 hover:bg-blue-100"}`}>
                             {visibleCPStockColumns.map(column => (
                               <TableCell key={column}>{result[column as keyof typeof result]}</TableCell>
                             ))}
