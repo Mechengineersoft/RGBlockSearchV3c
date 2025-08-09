@@ -191,7 +191,7 @@ const { data: gpStockResults, isLoading: isGPStockLoading, error: gpStockError }
 
   const gpStockColumnOrder = [
     "slicingDate", "blockNo", "partNo", "colorName", "length", "height", "thickness",
-    "nos", "dispatched", "eCut", "balance", "stockNos", "m2", "remarks", "location",
+    "nos", "dispatched", "eCut", "balanceStockNos", "m2", "remarks", "location",
     "mainLocation", "colourName", "subColour", "sp", "remark2"
   ];
 
@@ -318,8 +318,7 @@ const { data: gpStockResults, isLoading: isGPStockLoading, error: gpStockError }
     nos: "Nos",
     dispatched: "Dispatched",
     eCut: "E Cut",
-    balance: "Balance",
-    stockNos: "Stock Nos",
+    balanceStockNos: "Balance Stock Nos",
     m2: "M2",
     remarks: "Remarks",
     location: "Location",
