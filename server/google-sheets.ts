@@ -59,7 +59,7 @@ export async function getGPStockData(blockNo: string, partNo?: string, thickness
         dispatched: String(row[8] || ''),
         eCut: String(row[9] || ''),
         balance: String(row[10] || ''),
-        stockNos: String(row[11] || ''),
+        balanceStockNos: String(row[11] || ''),
         m2: String(row[12] || ''),
         remarks: String(row[13] || ''),
         location: String(row[14] || ''),
